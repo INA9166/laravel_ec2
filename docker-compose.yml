@@ -1,0 +1,23 @@
+version: "3.9"
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: ./docker/local/web/Dockerfile
+    ports:
+      - 80:8080
+    container_name: container_web
+    volumes:
+       - ./src/public:/var/www/src/public
+  app:
+    build:
+      context: .
+      dockerfile: ./docker/local/app/Dockerfile
+    expose:
+      - 9000
+    container_name: container_app
+    volumes:
+       - ./src:/var/www/src
+
+
