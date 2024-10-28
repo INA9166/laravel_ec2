@@ -9,6 +9,8 @@
 <body>
     <div class="login-container">
         <h2>HOME</h2>
+        <img src="/cache/images/neko.jpeg" style="width:100%">
+
         <label>ユーザー名</label>
         {{$username}}<br><br>
 
