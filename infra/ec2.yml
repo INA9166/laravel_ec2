@@ -7,6 +7,32 @@ Parameters:
     Default: prod
 
 Resources:
+  KeyPair:
+    Type: AWS::EC2::KeyPair
+    Properties:
+      KeyFormat: pem
+      KeyName: !Sub ${EnvName}-KeyPair
+      KeyType: ed25519
+      Tags:
+        - Key: Name
+          Value: !Sub ${EnvName}-EC2
+
+  Ec2SSHSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Allow SSH access
+      VpcId:
+        Fn::ImportValue: 
+          !Sub "${EnvName}-VPC-Output"
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 27.131.238.0/24
+      Tags:
+        - Key: Name
+          Value: !Sub ${EnvName}-SecurityGroup
+
   EC2:
     Type: AWS::EC2::Instance
     Properties:
@@ -16,12 +42,10 @@ Resources:
       ImageId: ami-08ce76bae392de7dc
       InstanceInitiatedShutdownBehavior: stop
       InstanceType: t3.nano
-      #KeyName: String
+      KeyName: !Ref KeyPair
       Monitoring: false
-      #SecurityGroupIds: 
-      #  - String
-      #SecurityGroups: 
-      #  - String
+      SecurityGroupIds: 
+        - !Ref Ec2SSHSecurityGroup
       SourceDestCheck: true
       SubnetId:
         Fn::ImportValue: 

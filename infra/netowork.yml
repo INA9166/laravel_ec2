@@ -75,6 +75,10 @@ Resources:
       SubnetId: !Ref PublicSubnet1a
 
 Outputs:
+  VPCId:
+    Value: !Ref VPC
+    Export:
+      Name: !Sub ${EnvName}-VPC-Output
   PublicSubnet1aId:
     Value: !Ref PublicSubnet1a
     Export:
