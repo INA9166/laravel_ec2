@@ -1,0 +1,23 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: EC2
+
+Parameters:
+  EnvName:
+    Type: String
+    Default: prod
+
+Resources:
+  Route53HostedZone:
+    Type: "AWS::Route53::HostedZone"
+    Properties:
+      Name: "ihihihihih123456.com"
+
+  Route53ihihihihih123456:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      HostedZoneId: !Ref Route53HostedZone
+      Name: ihihihihih123456.com
+      ResourceRecords: 
+        - Fn::ImportValue: !Sub ${EnvName}-EC2-PublicIp
+      TTL: 60
+      Type: A

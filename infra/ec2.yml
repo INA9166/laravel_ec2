@@ -26,9 +26,14 @@ Resources:
           !Sub "${EnvName}-VPC-Output"
       SecurityGroupIngress:
         - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 27.131.238.0/24
+        - IpProtocol: tcp
           FromPort: 22
           ToPort: 22
           CidrIp: 27.131.238.0/24
+
       Tags:
         - Key: Name
           Value: !Sub ${EnvName}-SecurityGroup
@@ -48,9 +53,20 @@ Resources:
         - !Ref Ec2SSHSecurityGroup
       SourceDestCheck: true
       SubnetId:
-        Fn::ImportValue: 
+        Fn::ImportValue:
           !Sub "${EnvName}-PublicSubnet1a-Output"
       Tags:
         - Key: Name
           Value: !Sub ${EnvName}-EC2
       Tenancy: default
+
+  EC2ElasticIP:
+    Type: AWS::EC2::EIP
+    Properties:
+      InstanceId: !Ref EC2
+
+Outputs:
+  EC2ElasticIPId:
+    Value: !GetAtt EC2.PublicIp
+    Export:
+      Name: !Sub ${EnvName}-EC2-PublicIp
