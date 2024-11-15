@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: 2010-09-09
-Description: EC2
+Description: ROUTE53
 
 Parameters:
   EnvName:
@@ -17,7 +17,9 @@ Resources:
     Properties:
       HostedZoneId: !Ref Route53HostedZone
       Name: ihihihihih123456.com
-      ResourceRecords: 
-        - Fn::ImportValue: !Sub ${EnvName}-EC2-PublicIp
-      TTL: 60
       Type: A
+      AliasTarget: 
+        DNSName:
+          Fn::ImportValue: ALBDNSNameExport
+        HostedZoneId:
+          Fn::ImportValue: ALBHostedZoneIdExport

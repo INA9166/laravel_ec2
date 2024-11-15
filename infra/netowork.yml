@@ -41,6 +41,17 @@ Resources:
         - Key: Name
           Value: !Sub ${EnvName}-Public-Subnet-1a
 
+  PublicSubnet1c:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPC
+      AvailabilityZone: "ap-northeast-1c"
+      CidrBlock: 10.0.11.0/24
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: !Sub ${EnvName}-Public-Subnet-1c
+
   PrivateSubnet1a:
     Type: AWS::EC2::Subnet
     Properties:
@@ -83,3 +94,7 @@ Outputs:
     Value: !Ref PublicSubnet1a
     Export:
       Name: !Sub ${EnvName}-PublicSubnet1a-Output
+  PublicSubnet1cId:
+    Value: !Ref PublicSubnet1c
+    Export:
+      Name: !Sub ${EnvName}-PublicSubnet1c-Output
