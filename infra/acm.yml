@@ -1,0 +1,27 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: ACM
+
+Parameters:
+  EnvName:
+    Type: String
+    Default: prod
+
+Resources:
+  ACM:
+    Type: AWS::CertificateManager::Certificate
+    Properties:
+      DomainName: ihihihihih123456.com
+      DomainValidationOptions: 
+        - DomainName: ihihihihih123456.com
+          HostedZoneId:
+            Fn::ImportValue: !Sub ${EnvName}-HostedZone
+      KeyAlgorithm: RSA_2048
+      SubjectAlternativeNames: 
+        - "*.ihihihihih123456.com"
+      ValidationMethod: DNS
+
+Outputs:
+  ACMId:
+    Value: !Ref ACM
+    Export:
+      Name: !Sub ${EnvName}-ACM-Output

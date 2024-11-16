@@ -26,8 +26,8 @@ Resources:
           !Sub "${EnvName}-VPC-Output"
       SecurityGroupIngress:
         - IpProtocol: tcp
-          FromPort: 80
-          ToPort: 80
+          FromPort: 443
+          ToPort: 443
           CidrIp: 27.131.238.0/24
       Tags:
         - Key: Name
@@ -72,6 +72,7 @@ Resources:
       ProtocolVersion: HTTP1
       #TargetGroupAttributes: 
       #- TargetGroupAttribute
+      #スティッキーセッションとか設定
       Targets: 
         - Id: !Ref EC2
       TargetType: instance
@@ -87,10 +88,11 @@ Resources:
     Type: AWS::ElasticLoadBalancingV2::Listener
     Properties:
       LoadBalancerArn: !Ref ALB
-      Port: 80
-      Protocol: HTTP
-      #Certificates: 
-      #- Certificate
+      Port: 443
+      Protocol: HTTPS
+      Certificates: 
+        - CertificateArn:
+            Fn::ImportValue: !Sub ${EnvName}-ACM-Output
       DefaultActions:
         - Type: fixed-response
           FixedResponseConfig:
@@ -112,7 +114,7 @@ Resources:
             Values:
               - "ihihihihih123456.com"
               - "www.ihihihihih123456.com"
-      #SslPolicy: String
+              - "test.ihihihihih123456.com"
 
   Ec2SecurityGroup:
     Type: AWS::EC2::SecurityGroup

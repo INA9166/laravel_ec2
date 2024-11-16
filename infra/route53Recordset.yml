@@ -1,0 +1,47 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: ROUTE53 Recordset
+
+Parameters:
+  EnvName:
+    Type: String
+    Default: prod
+
+Resources:
+  RecordSet1:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      HostedZoneId:
+        Fn::ImportValue: !Sub ${EnvName}-HostedZone
+      Name: ihihihihih123456.com
+      Type: A
+      AliasTarget: 
+        DNSName:
+          Fn::ImportValue: ALBDNSNameExport
+        HostedZoneId:
+          Fn::ImportValue: ALBHostedZoneIdExport
+
+  RecordSet2:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      HostedZoneId:
+        Fn::ImportValue: !Sub ${EnvName}-HostedZone
+      Name: www.ihihihihih123456.com
+      Type: A
+      AliasTarget: 
+        DNSName:
+          Fn::ImportValue: ALBDNSNameExport
+        HostedZoneId:
+          Fn::ImportValue: ALBHostedZoneIdExport
+
+  RecordSet3:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      HostedZoneId:
+        Fn::ImportValue: !Sub ${EnvName}-HostedZone
+      Name: test.ihihihihih123456.com
+      Type: A
+      AliasTarget: 
+        DNSName:
+          Fn::ImportValue: ALBDNSNameExport
+        HostedZoneId:
+          Fn::ImportValue: ALBHostedZoneIdExport
