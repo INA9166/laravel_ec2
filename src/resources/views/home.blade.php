@@ -12,7 +12,8 @@
         <img src="/cache/images/neko.jpeg" style="width:100%">
 
         <label>ユーザー名</label>
-        {{$username}}<br><br>
+        {{$username}}<br>
+        {{env('EC2_ID')}}<br><br>
 
         <a href="{{url('logout')}}">ログアウト</a>
     </div>
