@@ -63,6 +63,17 @@ Resources:
         - Key: Name
           Value: !Sub ${EnvName}-Private-Subnet-1a
 
+  PrivateSubnet1c:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPC
+      AvailabilityZone: "ap-northeast-1c"
+      CidrBlock: 10.0.21.0/24
+      MapPublicIpOnLaunch: false
+      Tags:
+        - Key: Name
+          Value: !Sub ${EnvName}-Private-Subnet-1c
+
   PublicRouteTable:
     Type: AWS::EC2::RouteTable
     Properties:
@@ -85,6 +96,12 @@ Resources:
       RouteTableId: !Ref PublicRouteTable
       SubnetId: !Ref PublicSubnet1a
 
+  PublicSubnet1cRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref PublicRouteTable
+      SubnetId: !Ref PublicSubnet1c
+
 Outputs:
   VPCId:
     Value: !Ref VPC
@@ -98,3 +115,11 @@ Outputs:
     Value: !Ref PublicSubnet1c
     Export:
       Name: !Sub ${EnvName}-PublicSubnet1c-Output
+  PrivateSubnet1aId:
+    Value: !Ref PrivateSubnet1a
+    Export:
+      Name: !Sub ${EnvName}-PrivateSubnet1a-Output
+  PrivateSubnet1cId:
+    Value: !Ref PrivateSubnet1c
+    Export:
+      Name: !Sub ${EnvName}-PrivateSubnet1c-Output

@@ -70,11 +70,16 @@ Resources:
       Port: 80
       Protocol: HTTP
       ProtocolVersion: HTTP1
-      #TargetGroupAttributes: 
-      #- TargetGroupAttribute
-      #スティッキーセッションとか設定
+      TargetGroupAttributes: 
+        - Key: stickiness.enabled
+          Value: true
+        - Key: stickiness.type
+          Value: lb_cookie
+        - Key: stickiness.lb_cookie.duration_seconds
+          Value: 3600
       Targets: 
-        - Id: !Ref EC2
+        - Id: !Ref EC2WEB1
+        - Id: !Ref EC2WEB2
       TargetType: instance
       UnhealthyThresholdCount: 2
       VpcId:
@@ -136,7 +141,7 @@ Resources:
         - Key: Name
           Value: !Sub ${EnvName}-EC2-SecurityGroup
 
-  EC2:
+  EC2WEB1:
     Type: AWS::EC2::Instance
     Properties:
       DisableApiTermination: false
@@ -155,19 +160,42 @@ Resources:
           !Sub "${EnvName}-PublicSubnet1a-Output"
       Tags:
         - Key: Name
-          Value: !Sub ${EnvName}-EC2
+          Value: !Sub ${EnvName}-EC2-WEB1
       Tenancy: default
 
-  EC2ElasticIP:
+  EC2WEB2:
+    Type: AWS::EC2::Instance
+    Properties:
+      DisableApiTermination: false
+      EbsOptimized: false
+      #IamInstanceProfile: String
+      ImageId: ami-08ce76bae392de7dc
+      InstanceInitiatedShutdownBehavior: stop
+      InstanceType: t3.nano
+      KeyName: !Ref KeyPair
+      Monitoring: false
+      SecurityGroupIds: 
+        - !Ref Ec2SecurityGroup
+      SourceDestCheck: true
+      SubnetId:
+        Fn::ImportValue:
+          !Sub "${EnvName}-PublicSubnet1c-Output"
+      Tags:
+        - Key: Name
+          Value: !Sub ${EnvName}-EC2-WEB2
+      Tenancy: default
+
+  EC2WEB1ElasticIP:
     Type: AWS::EC2::EIP
     Properties:
-      InstanceId: !Ref EC2
+      InstanceId: !Ref EC2WEB1
+
+  EC2WEB2ElasticIP:
+    Type: AWS::EC2::EIP
+    Properties:
+      InstanceId: !Ref EC2WEB2
 
 Outputs:
-  EC2ElasticIPId:
-    Value: !GetAtt EC2.PublicIp
-    Export:
-      Name: !Sub ${EnvName}-EC2-PublicIp
   ALBDNSName:
     Value: !GetAtt ALB.DNSName
     Export:
