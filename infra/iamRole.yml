@@ -1,0 +1,37 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: IAM
+
+Parameters:
+  EnvName:
+    Type: String
+    Default: prod
+
+Resources:
+  EC2WEBRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service:
+            - ec2.amazonaws.com
+          Action:
+          - sts:AssumeRole
+      Path: "/"
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
+
+  EC2WEBProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Roles:
+        - !Ref EC2WEBRole
+      Path: "/"
+
+Outputs:
+  EC2WEBProfileId:
+    Value: !Ref EC2WEBProfile
+    Export:
+      Name: !Sub ${EnvName}-EC2WEBProfile-Output

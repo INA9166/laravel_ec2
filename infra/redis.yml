@@ -1,0 +1,64 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: ACM
+
+Parameters:
+  EnvName:
+    Type: String
+    Default: prod
+
+Resources:
+  WEBRedis:
+    Type: AWS::ElastiCache::ReplicationGroup
+    Properties:
+      AZMode: cross-az
+      NumCacheNodes: 1
+      Port: 6379
+      Tags:
+        - Key: Name
+          Value: !Sub ${EnvName}-WEBRedis
+      TransitEncryptionEnabled: true
+
+      AtRestEncryptionEnabled: true
+      AuthToken: ABCDEFGHIJKLMNOPQRSTUVWXYZ
+      AutomaticFailoverEnabled: true
+      AutoMinorVersionUpgrade: false
+      CacheNodeType: cache.t4g.micro
+      #CacheSubnetGroupName: String
+      ClusterMode:
+        Enabled: false
+      Engine: redis
+      EngineVersion: 7.1
+  GlobalReplicationGroupId: String
+  IpDiscovery: String
+  KmsKeyId: String
+  LogDeliveryConfigurations: 
+    - LogDeliveryConfigurationRequest
+  MultiAZEnabled: Boolean
+  NetworkType: String
+  NodeGroupConfiguration: 
+    - NodeGroupConfiguration
+  NotificationTopicArn: String
+  NumCacheClusters: Integer
+  NumNodeGroups: Integer
+  Port: Integer
+  PreferredCacheClusterAZs: 
+    - String
+  PreferredMaintenanceWindow: String
+  PrimaryClusterId: String
+  ReplicasPerNodeGroup: Integer
+  ReplicationGroupDescription: String
+  ReplicationGroupId: String
+  SecurityGroupIds: 
+    - String
+  SnapshotArns: 
+    - String
+  SnapshotName: String
+  SnapshotRetentionLimit: Integer
+  SnapshottingClusterId: String
+  SnapshotWindow: String
+  Tags: 
+    - Tag
+  TransitEncryptionEnabled: Boolean
+  TransitEncryptionMode: String
+  UserGroupIds: 
+    - String

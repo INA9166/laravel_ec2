@@ -7,15 +7,15 @@ Parameters:
     Default: prod
 
 Resources:
-  KeyPair:
-    Type: AWS::EC2::KeyPair
-    Properties:
-      KeyFormat: pem
-      KeyName: !Sub ${EnvName}-KeyPair
-      KeyType: ed25519
-      Tags:
-        - Key: Name
-          Value: !Sub ${EnvName}-EC2
+  #KeyPair:
+  #  Type: AWS::EC2::KeyPair
+  #  Properties:
+  #    KeyFormat: pem
+  #    KeyName: !Sub ${EnvName}-KeyPair
+  #    KeyType: ed25519
+  #    Tags:
+  #      - Key: Name
+  #        Value: !Sub ${EnvName}-EC2
 
   ALBSecurityGroup:
     Type: AWS::EC2::SecurityGroup
@@ -79,7 +79,7 @@ Resources:
           Value: 3600
       Targets: 
         - Id: !Ref EC2WEB1
-        - Id: !Ref EC2WEB2
+        #- Id: !Ref EC2WEB2
       TargetType: instance
       UnhealthyThresholdCount: 2
       VpcId:
@@ -133,10 +133,10 @@ Resources:
           FromPort: 80
           ToPort: 80
           SourceSecurityGroupId: !Ref ALBSecurityGroup
-        - IpProtocol: tcp
-          FromPort: 22
-          ToPort: 22
-          CidrIp: 27.131.238.0/24
+        #- IpProtocol: tcp
+        #  FromPort: 22
+        #  ToPort: 22
+        #  CidrIp: 27.131.238.0/24
       Tags:
         - Key: Name
           Value: !Sub ${EnvName}-EC2-SecurityGroup
@@ -146,54 +146,56 @@ Resources:
     Properties:
       DisableApiTermination: false
       EbsOptimized: false
-      #IamInstanceProfile: String
+      IamInstanceProfile:
+        Fn::ImportValue: !Sub ${EnvName}-EC2WEBProfile-Output
       ImageId: ami-08ce76bae392de7dc
       InstanceInitiatedShutdownBehavior: stop
       InstanceType: t3.nano
-      KeyName: !Ref KeyPair
+      #KeyName: !Ref KeyPair
       Monitoring: false
       SecurityGroupIds: 
         - !Ref Ec2SecurityGroup
       SourceDestCheck: true
       SubnetId:
         Fn::ImportValue:
-          !Sub "${EnvName}-PublicSubnet1a-Output"
+          !Sub "${EnvName}-PrivateSubnet1a-Output"
       Tags:
         - Key: Name
           Value: !Sub ${EnvName}-EC2-WEB1
       Tenancy: default
 
-  EC2WEB2:
-    Type: AWS::EC2::Instance
-    Properties:
-      DisableApiTermination: false
-      EbsOptimized: false
-      #IamInstanceProfile: String
-      ImageId: ami-08ce76bae392de7dc
-      InstanceInitiatedShutdownBehavior: stop
-      InstanceType: t3.nano
-      KeyName: !Ref KeyPair
-      Monitoring: false
-      SecurityGroupIds: 
-        - !Ref Ec2SecurityGroup
-      SourceDestCheck: true
-      SubnetId:
-        Fn::ImportValue:
-          !Sub "${EnvName}-PublicSubnet1c-Output"
-      Tags:
-        - Key: Name
-          Value: !Sub ${EnvName}-EC2-WEB2
-      Tenancy: default
+  #EC2WEB2:
+  #  Type: AWS::EC2::Instance
+  #  Properties:
+  #    DisableApiTermination: false
+  #    EbsOptimized: false
+  #    IamInstanceProfile:
+  #      Fn::ImportValue: !Sub ${EnvName}-EC2WEBProfile-Output
+  #    ImageId: ami-08ce76bae392de7dc
+  #    InstanceInitiatedShutdownBehavior: stop
+  #    InstanceType: t3.nano
+  #    KeyName: !Ref KeyPair
+  #    Monitoring: false
+  #    SecurityGroupIds: 
+  #      - !Ref Ec2SecurityGroup
+  #    SourceDestCheck: true
+  #    SubnetId:
+  #      Fn::ImportValue:
+  #        !Sub "${EnvName}-PrivateSubnet1c-Output"
+  #    Tags:
+  #      - Key: Name
+  #        Value: !Sub ${EnvName}-EC2-WEB2
+  #    Tenancy: default
 
-  EC2WEB1ElasticIP:
-    Type: AWS::EC2::EIP
-    Properties:
-      InstanceId: !Ref EC2WEB1
+  #EC2WEB1ElasticIP:
+  #  Type: AWS::EC2::EIP
+  #  Properties:
+  #    InstanceId: !Ref EC2WEB1
 
-  EC2WEB2ElasticIP:
-    Type: AWS::EC2::EIP
-    Properties:
-      InstanceId: !Ref EC2WEB2
+  #EC2WEB2ElasticIP:
+  #  Type: AWS::EC2::EIP
+  #  Properties:
+  #    InstanceId: !Ref EC2WEB2
 
 Outputs:
   ALBDNSName:
