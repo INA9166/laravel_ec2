@@ -1,0 +1,96 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: VPC
+
+Parameters:
+  EnvName:
+    Type: String
+    Default: prod
+
+Resources:
+  WebCloudFrontCachePolicy:
+    Type: AWS::CloudFront::CachePolicy
+    Properties:
+      CachePolicyConfig: 
+        DefaultTTL: 0
+        MaxTTL: 0
+        MinTTL: 0
+        Name: !Sub ${prod}-CachePolicy
+        ParametersInCacheKeyAndForwardedToOrigin: 
+          EnableAcceptEncodingBrotli: Boolean
+          EnableAcceptEncodingGzip: Boolean
+          CookiesConfig: 
+            CookieBehavior: none
+          HeadersConfig: 
+            HeadersConfig
+          QueryStringsConfig: 
+            QueryStringsConfig
+
+
+  WEBCloudFront:
+    Type: AWS::CloudFront::Distribution
+    Properties:
+      DistributionConfig: 
+        Aliases: 
+          - "ihihihihih123456.com"
+          - "www.ihihihihih123456.com"
+        DefaultCacheBehavior: 
+          AllowedMethods: 
+            - GET
+            - HEAD
+            - OPTIONS
+            - PUT
+            - PATCH
+            - POST
+            - DELETE
+          CachePolicyId: 4135ea2d-6df8-44a3-9df3-4b5a84be39ad
+          Compress: false
+  FieldLevelEncryptionId: String
+  ForwardedValues: 
+    ForwardedValues
+  FunctionAssociations: 
+    - FunctionAssociation
+  LambdaFunctionAssociations: 
+    - LambdaFunctionAssociation
+  OriginRequestPolicyId: String
+  RealtimeLogConfigArn: String
+  ResponseHeadersPolicyId: String
+  SmoothStreaming: Boolean
+  TargetOriginId: String
+  TrustedKeyGroups: 
+    - String
+  TrustedSigners: 
+    - String
+  ViewerProtocolPolicy: String
+
+        CacheBehaviors: 
+         - CacheBehavior
+        CNAMEs: 
+          - String
+        Comment: String
+        ContinuousDeploymentPolicyId: String
+        CustomErrorResponses: 
+          - CustomErrorResponse
+        CustomOrigin: 
+          LegacyCustomOrigin
+        DefaultRootObject: String
+        Enabled: Boolean
+        HttpVersion: String
+        IPV6Enabled: Boolean
+        Logging: 
+          Logging
+        OriginGroups: 
+          OriginGroups
+        Origins: 
+          - Origin
+        PriceClass: String
+        Restrictions: 
+          Restrictions
+        S3Origin: 
+          LegacyS3Origin
+        Staging: Boolean
+        ViewerCertificate: 
+          ViewerCertificate
+        WebACLId: String
+      Tags: 
+        - Key: Name
+          Value: !Sub ${EnvName}-Distribution
