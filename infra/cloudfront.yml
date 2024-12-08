@@ -40,7 +40,8 @@ Resources:
               OriginReadTimeout: 60
               OriginSSLProtocols:
                 - TLSv1.2
-            DomainName: Fn::ImportValue: ALBDNSNameExport
+            DomainName:
+              Fn::ImportValue: ALBDNSNameExport
             Id: ALBOrigin
             #OriginAccessControlId: String
             OriginShield: 
@@ -70,7 +71,10 @@ Resources:
         HttpVersion: http2and3
         PriceClass: PriceClass_200
         ViewerCertificate: 
-          ViewerCertificate
+          AcmCertificateArn:
+            Fn::ImportValue: !Sub ${EnvName}-ACM-Output
+          MinimumProtocolVersion: TLSv1.2_2021
+          SslSupportMethod: sni-only
         #WebACLId: String
       Tags: 
         - Key: Name
