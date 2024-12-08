@@ -1,0 +1,29 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: ACM
+
+Parameters:
+  EnvName:
+    Type: String
+    Default: prod
+  HostZoneArn:
+    Type: String
+    Default: Z04700082EC1P3DNNNW1Z
+
+Resources:
+  CloudFrontACM:
+    Type: AWS::CertificateManager::Certificate
+    Properties:
+      DomainName: ihihihihih123456.com
+      DomainValidationOptions: 
+        - DomainName: ihihihihih123456.com
+          HostedZoneId: !Sub ${HostZoneArn}
+      KeyAlgorithm: RSA_2048
+      SubjectAlternativeNames: 
+        - "*.ihihihihih123456.com"
+      ValidationMethod: DNS
+
+Outputs:
+  ACMId:
+    Value: !Ref CloudFrontACM
+    Export:
+      Name: !Sub ${EnvName}-CloudFront-ACM-Output

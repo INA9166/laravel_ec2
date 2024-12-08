@@ -71,8 +71,7 @@ Resources:
         HttpVersion: http2and3
         PriceClass: PriceClass_200
         ViewerCertificate: 
-          AcmCertificateArn:
-            Fn::ImportValue: !Sub ${EnvName}-ACM-Output
+          AcmCertificateArn: arn:aws:acm:us-east-1:325812952166:certificate/227fa772-0158-4a20-ab90-13b042e20616
           MinimumProtocolVersion: TLSv1.2_2021
           SslSupportMethod: sni-only
         #WebACLId: String
