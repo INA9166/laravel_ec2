@@ -47,10 +47,10 @@ Resources:
             OriginShield: 
               Enabled: true
               OriginShieldRegion: ap-northeast-1
-            #S3OriginConfig: 
+            #S3OriginConfig:
             #  S3OriginConfig
-        DefaultCacheBehavior: 
-          AllowedMethods: 
+        DefaultCacheBehavior:
+          AllowedMethods:
             - GET
             - HEAD
             - OPTIONS
@@ -60,14 +60,25 @@ Resources:
             - DELETE
           CachePolicyId: 4135ea2d-6df8-44a3-9df3-4b5a84be39ad
           Compress: false
-          #OriginRequestPolicyId: String
+          #OriginRequestPolicyId: 216adef6-5c7f-47e4-b989-5492eafa07d3
           #ResponseHeadersPolicyId: String
           TargetOriginId: ALBOrigin
           #TrustedKeyGroups: 
           #  - String
           ViewerProtocolPolicy: https-only
-        #CacheBehaviors: 
-        # - CacheBehavior
+        CacheBehaviors: 
+          - AllowedMethods:
+              - GET
+              - HEAD
+            CachedMethods: 
+              - GET
+              - HEAD
+            CachePolicyId: 658327ea-f89d-4fab-a63d-7e88639e58f6
+            Compress: true
+            OriginRequestPolicyId: 86c8e3d4-b53b-4db3-a3fa-2352f4c55484
+            PathPattern: /cace/*
+            TargetOriginId: ALBOrigin
+            ViewerProtocolPolicy: https-only
         HttpVersion: http2and3
         PriceClass: PriceClass_200
         ViewerCertificate: 
