@@ -7,24 +7,6 @@ Parameters:
     Default: prod
 
 Resources:
-  #WebCloudFrontCachePolicy:
-  #  Type: AWS::CloudFront::CachePolicy
-  #  Properties:
-  #    CachePolicyConfig: 
-  #      DefaultTTL: 0
-  #      MaxTTL: 0
-  #      MinTTL: 0
-  #      Name: !Sub ${prod}-CachePolicy
-  #      ParametersInCacheKeyAndForwardedToOrigin: 
-  #        EnableAcceptEncodingBrotli: Boolean
-  #        EnableAcceptEncodingGzip: Boolean
-  #        CookiesConfig: 
-  #          CookieBehavior: none
-  #        HeadersConfig: 
-  #          HeadersConfig
-  #        QueryStringsConfig: 
-  #          QueryStringsConfig
-
   WEBCloudFront:
     Type: AWS::CloudFront::Distribution
     Properties:
@@ -60,7 +42,7 @@ Resources:
             - DELETE
           CachePolicyId: 4135ea2d-6df8-44a3-9df3-4b5a84be39ad
           Compress: false
-          #OriginRequestPolicyId: 216adef6-5c7f-47e4-b989-5492eafa07d3
+          OriginRequestPolicyId: 216adef6-5c7f-47e4-b989-5492eafa07d3
           #ResponseHeadersPolicyId: String
           TargetOriginId: ALBOrigin
           #TrustedKeyGroups: 
@@ -75,8 +57,8 @@ Resources:
               - HEAD
             CachePolicyId: 658327ea-f89d-4fab-a63d-7e88639e58f6
             Compress: true
-            OriginRequestPolicyId: 86c8e3d4-b53b-4db3-a3fa-2352f4c55484
-            PathPattern: /cace/*
+            #OriginRequestPolicyId: 86c8e3d4-b53b-4db3-a3fa-2352f4c55484
+            PathPattern: /cache/*
             TargetOriginId: ALBOrigin
             ViewerProtocolPolicy: https-only
         HttpVersion: http2and3
@@ -89,3 +71,9 @@ Resources:
       Tags: 
         - Key: Name
           Value: !Sub ${EnvName}-Distribution
+
+Outputs:
+  CloudFrontDNSName:
+    Value: !GetAtt WEBCloudFront.DomainName
+    Export:
+      Name: CloudFrontDNSNameExport
