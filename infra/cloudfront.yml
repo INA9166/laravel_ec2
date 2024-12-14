@@ -7,6 +7,22 @@ Parameters:
     Default: prod
 
 Resources:
+  WEBOriginRequestPolicy:
+    Type: AWS::CloudFront::OriginRequestPolicy
+    Properties:
+      OriginRequestPolicyConfig:
+        CookiesConfig: 
+          CookieBehavior: none
+        HeadersConfig: 
+          HeaderBehavior: whitelist
+          Headers:
+            - Origin
+            - Host
+            - Referer
+        Name: !Sub ${EnvName}-WEB-OriginRequestPolicy
+        QueryStringsConfig: 
+          QueryStringBehavior: none
+
   WEBCloudFront:
     Type: AWS::CloudFront::Distribution
     Properties:
@@ -57,7 +73,7 @@ Resources:
               - HEAD
             CachePolicyId: 658327ea-f89d-4fab-a63d-7e88639e58f6
             Compress: true
-            #OriginRequestPolicyId: 86c8e3d4-b53b-4db3-a3fa-2352f4c55484
+            OriginRequestPolicyId: !Ref WEBOriginRequestPolicy
             PathPattern: /cache/*
             TargetOriginId: ALBOrigin
             ViewerProtocolPolicy: https-only
