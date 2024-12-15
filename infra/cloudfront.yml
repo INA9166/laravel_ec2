@@ -45,8 +45,14 @@ Resources:
             OriginShield: 
               Enabled: true
               OriginShieldRegion: ap-northeast-1
-            #S3OriginConfig:
-            #  S3OriginConfig
+          - S3OriginConfig:
+              OriginAccessIdentity: 
+            DomainName:
+              Fn::ImportValue: ALBDNSNameExport
+            Id: S3Origin
+            OriginShield: 
+              Enabled: true
+              OriginShieldRegion: ap-northeast-1
         DefaultCacheBehavior:
           AllowedMethods:
             - GET
