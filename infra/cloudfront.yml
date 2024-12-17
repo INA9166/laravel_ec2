@@ -41,12 +41,12 @@ Resources:
             DomainName:
               Fn::ImportValue: ALBDNSNameExport
             Id: ALBOrigin
-            #OriginAccessControlId: String
             OriginShield: 
               Enabled: true
               OriginShieldRegion: ap-northeast-1
           - S3OriginConfig:
-              OriginAccessIdentity: 
+              OriginAccessIdentity: ''
+            OriginAccessControlId:
             DomainName:
               Fn::ImportValue: ALBDNSNameExport
             Id: S3Origin
